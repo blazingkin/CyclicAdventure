@@ -1,16 +1,21 @@
 import Lists
 require Player
 require Level
-
+require CombatState
+import GameUtil
 
 
 constructor GameState(player, num_levels)
     # Enum of locations
     overworld = "Overworld"
     combat = "Combat"
+    combat_state = "nothing"
 
     location = overworld
-    levels = range(num_levels).map!(x -> Level(x))
+    levels = []
+    for i = 0; i < num_levels; i++
+        levels[i] = Level(i)
+    end
     current_level_num = 0
 
     :advance_level
@@ -26,8 +31,31 @@ constructor GameState(player, num_levels)
     :describe_level
         human_readable_level = current_level_num + 1
 
-        print("You enter the "+ human_readable_level.ordinal() + " floor")
+        print("You are on the "+ human_readable_level.ordinal() + " floor")
         print("You see "+current_level())
+    end
+
+    :describe_combat
+        print(combat_state)
+        print_seperator()
+        player.print_combat_info()
+    end
+
+    :print_options
+        current_level().options.each(x, i -> print(i+". "+x))
+    end
+
+    :start_combat(enemies_names)
+        this.combat_state = CombatState!(player, enemies_names)
+        location = combat
+    end
+
+    :get_combat_state
+        combat_state
+    end
+
+    :end_combat()
+
     end
 
 end

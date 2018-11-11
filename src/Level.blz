@@ -1,12 +1,14 @@
+require Actions
 level_types = ["Swamp", "Forest", "Plains"]
 :get_level_type
     level_types.sample()
 end
 
 
-swamp_flavor = ["an eeire swamp. The trees stare back at you"]
-forest_flavor = [""]
-plains_flavor = [""]
+swamp_flavor = ["an eeire swamp. The trees stare back at you", "the bubbling muck of a swamp. Something smells off"]
+forest_flavor = ["trees as far as the eye can see", "a squirrel dash up a tree"]
+plains_flavor = ["grass blowing in the wind", "cows grazing in the distance"]
+boss_flavor = ["a giant dragon standing before you, devastating the landscape", "a horrifying lizard terrorizing the town"]
 
 :level_flavor_text(type)
     
@@ -16,15 +18,69 @@ plains_flavor = [""]
         forest_flavor.sample()
     else if type == "Plains"
         plains_flavor.sample()
+    else if type == "Boss"
+        boss_flavor.sample()
     end
 
 end
 
 
-constructor Level(number)
 
-    type = get_level_type()
-    
+:generate_options(type)
+    options = ["Continue"]
+
+    if type == "Boss"
+        options = ["Continue", "Face the dragon"]
+        return options
+    end
+
+    if type == "Swamp"
+        swamp_options = ["You see a dead body. Poke it?"]
+        len = random(1, swamp_options.size())
+        for i = 0; i < len; i++
+            options[options.size()] = swamp_options.sample()
+        end
+    else if type == "Forest"
+        forest_options = ["A squirrel runs by. Chase it?"]
+        len = random(1, forest_options.size())
+        for i = 0; i < len; i++
+            options[options.size()] = forest_options.sample()
+        end
+    else if type == "Plains"
+        plains_options = ["Nap"]
+        len = random(1, plains_options.size())
+        for i = 0; i < len; i++
+            options[options.size()] = plains_options.sample()
+        end
+    end
+
+    generic_options = ["You see a stranger. Approach them?"]
+    len = random(1, generic_options.size())
+    for i = 0; i < len; i++
+        options[generic_options.size()] = generic_options.sample()
+    end
+
+    options.unique()
+end
+
+
+constructor Level(number)
+    if number == 0
+        type = "Boss"
+    else
+        type = get_level_type()
+    end
+    options = generate_options(type)
+    option_functions = options.map(x -> get_function_from_option(x))
+
+    :number_of_options
+        options.size()
+    end
+
+    :execute_option(num, game_state)
+        func = option_functions[num]
+        func!(game_state)
+    end
 
     :show
         level_flavor_text(type)

@@ -1,0 +1,38 @@
+constructor Enemy(name, starting_health, on_act)
+
+    health = starting_health
+
+    :hurt(amount)
+        health = health - amount
+    end
+
+    :heal(amount)
+        health = health + amount
+        if health > starting_health
+            health = starting_health
+        end
+    end
+
+    :show
+        name + "\n" + health + "/" + starting_health
+    end
+
+    :act(combat_state)
+        on_act!(combat_state)
+    end
+
+end
+
+:dragon_action(combat_state)
+    combat_state.player.hurt(10)
+end
+
+:name_to_enemy(name)
+    if name == "Dragon"
+        Enemy(name, 100, dragon_action)
+    end
+end
+
+:names_to_enemies(names)
+    names.map(name_to_enemy)
+end

@@ -1,0 +1,8 @@
+:inform(string)
+    print(string)
+    string_input()
+end
+
+:print_seperator
+    print("==========")
+end

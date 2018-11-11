@@ -1,0 +1,51 @@
+import GameUtil
+# Advance to the next level
+:next_level(game_state)
+    game_state.advance_level()
+end
+
+:nap(game_state)
+    game_state.player.heal(5)
+    print("You take a nice relaxing nap.")
+    inform("You recover 5 health.")
+end
+
+:talk_to_stranger(game_statehurt)
+    event = random(3)
+    if event == 0
+        print("They appear to be friendly and in a talkative mood")
+        inform("You chat about life, love, and the finer things")
+    else if event == 1
+        print("It was a bandit!")
+        inform("After a brief struggle, the bandit makes away with a few of your coins")
+        game_state.player.change_gold(0 - random(3, 15))
+        game_state.player.hurt(random(1, 3))
+        inform(game_state.player)
+    else if event == 2
+        print("It is a rich man who is giving away all of his money.")
+        inform("He throws you some coins!")
+        game_state.player.change_gold(random(15, 30))
+        inform(game_state.player)
+    end
+end
+
+:enter_boss_fight(game_state)
+    game_state.start_combat(["Dragon"])
+end
+
+:get_function_from_option(option)
+    if option == "Continue"
+        next_level
+    else if option == "You see a dead body. Poke it?"
+        x -> inform("It jiggles. Gross!!")
+    else if option == "A squirrel runs by. Chase it?"
+        x -> inform("It was too fast and got away")
+    else if option == "Nap"
+        nap
+    else if option == "You see a stranger. Approach them?"
+        talk_to_stranger
+    else if option == "Face the dragon"
+        enter_boss_fight
+    end
+end
+

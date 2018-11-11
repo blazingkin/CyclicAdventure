@@ -1,0 +1,7 @@
+# use signature is CombatState -> void
+constructor Item(name, worth, use)
+
+
+end
+
+items = []

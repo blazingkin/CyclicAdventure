@@ -1,0 +1,44 @@
+require Enemy
+constructor CombatState(player, enemies_names)
+    enemies = names_to_enemies(enemies_names)
+    player_turn = "player"
+    enemy_turn = "enemy"
+    turn = player_turn
+    dead_enemies = []
+
+    :next
+        if turn == player_turn
+            turn = enemy_turn
+        else
+            turn = player_turn
+        end
+        # Add all the dead enemies
+        dead_enemies.concatenate!(enemies.filter(x -> x.health <= 0))
+        # Remove them from the current list of enemies
+        enemies.filter!(enemy -> enemy.health > 0)
+    end
+
+    :enemies_take_turn
+        for i = 0; i < enemies.size(); i++
+            action = enemies[i].act
+            action!(this)
+        end
+    end
+
+    :over?
+        enemies.empty?() || player.get_health() <= 0
+    end
+
+    :get_enemy
+        enemies.sample()
+    end
+
+    :show
+        result = ""
+        for i = 0; i < enemies.size(); i++
+            result = result + enemies[i].show()
+        end
+        result
+    end
+
+end

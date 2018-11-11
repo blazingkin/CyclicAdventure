@@ -1,14 +1,11 @@
 require GameState
 require Player
 require Class
-
-:print_seperator
-    print("==========")
-end
+import GameUtil
 
 :main
     print("Welcome to cyclic adventure!!")
-    print("You can quit at any time by typing exit")
+    print("You can quit at any time by typing -1")
     print_seperator()
     gs = setup_game()
     while loop!(gs)
@@ -17,19 +14,24 @@ end
 
 :loop(game_state)
     prompt(game_state)
-    input = string_input()
-    if input == "exit"
+    input = number_input()
+    if input == -1
         return false
     end
     process_input!(game_state, input)
+    if game_state.player.get_health() <= 0
+        print("You have died! Try again!")
+        return false
+    end
     return true
 end
 
 :prompt(game_state)   
     if game_state.location == game_state.overworld
         game_state.describe_level()
+        game_state.print_options()
     else if game_state.location == game_state.combat
-
+        game_state.describe_combat()
     end
 end
 
@@ -50,7 +52,7 @@ end
     print_seperator()
     player = Player(name, class_name(class_number))
     print("Welcome "+player)
-
+    string_input()
 
     print_seperator()
     print("How many rooms do you want to play with?")
@@ -65,9 +67,21 @@ end
 
 :process_input(game_state, input)
     if game_state.location == game_state.overworld
-        game_state.advance_level()
+        if input >= game_state.current_level().number_of_options() || input < 0
+            print("Please enter a valid option")
+            return ""
+        end
+        game_state.current_level().execute_option(input, game_state)
         print_seperator()
     else if game_state.location == game_state.combat
-
+        game_state.get_combat_state().next()
+        if game_state.get_combat_state().over?()
+            game_state.end_combat()
+        end
+        game_state.get_combat_state().enemies_take_turn()
+        game_state.get_combat_state().next()
+        if game_state.get_combat_state().over?()
+            game_state.end_combat()
+        end
     end
 end

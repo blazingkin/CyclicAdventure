@@ -1,10 +1,12 @@
 constructor Player(name, class)
-    max_health = 100
-    health = max_health
 
     strength = class.base_strength
     agility = class.base_agility
     intelligence = class.base_intelligence
+    gold = class.base_gold
+
+    max_health = strength * 10
+    health = max_health
 
     :current_strength
         strength
@@ -18,11 +20,40 @@ constructor Player(name, class)
         intelligence
     end
 
+    :heal(amount)
+        health = health + amount
+        if health > max_health
+            health = max_health
+        end
+    end
+
+    :hurt(amount)
+        health = health - amount
+    end
+
+    :get_health
+        health
+    end
+
+    :change_gold(amount)
+        gold = gold + amount
+        if gold < 0
+            gold = 0
+        end
+    end
+
     :show
         result = name + " the " + class + "\n"
         result = result + current_strength() + " STR - " + current_agility() + " AGI - " + current_intelligence() +" INT\n"
+        result = result + gold +" gold\n"
         result = result + health + "/" + max_health + " health"
         result
+    end
+
+    :print_combat_info()
+        result = name + " the " + class + "\n"
+        result = result + health + "/" + max_health + " health"
+        print(result)
     end
 
 end
