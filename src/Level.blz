@@ -35,7 +35,7 @@ end
     end
 
     if type == "Swamp"
-        swamp_options = ["You see a dead body. Poke it?"]
+        swamp_options = ["You see a dead body. Poke it?", "A stick is laying in the muck. Pick it up?"]
         len = random(1, swamp_options.size())
         for i = 0; i < len; i++
             options[options.size()] = swamp_options.sample()
@@ -54,7 +54,7 @@ end
         end
     end
 
-    generic_options = ["You see a stranger. Approach them?", "Look for a fight"]
+    generic_options = ["You see a stranger. Approach them?", "Look for a fight", "You see a potion master selling his wares. Approach him?"]
     len = random(1, generic_options.size())
     for i = 0; i < len; i++
         options[options.size()] = generic_options.sample()

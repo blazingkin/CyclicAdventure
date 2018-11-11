@@ -1,5 +1,5 @@
 import GameUtil
-constructor Enemy(name, starting_health, on_act)
+constructor Enemy(name, starting_health, bounty, on_act)
 
     health = starting_health
 
@@ -24,9 +24,16 @@ constructor Enemy(name, starting_health, on_act)
 
 end
 
-:hurt_player_func(dmg)
-    combat_state -> combat_state.player.hurt(dmg + random(0 - dmg/4, dmg/4))
+:hurt_player_func_helper(combat_state, dmg, msg)
+    damage = dmg + random(0 - dmg / 4, dmg / 4)
+    combat_state.player.hurt(damage)
+    inform(msg + damage +" damage")
 end
+
+:hurt_player_func(dmg, msg)
+    combat_state -> hurt_player_func_helper(combat_state, dmg, msg)
+end
+
 
 :dragon_action(combat_state)
     option = random(2)
@@ -46,13 +53,37 @@ end
     inform("The centaur stomps you for "+damage+" damage")
 end
 
+:queen_bee_combat(combat_state)
+    if combat_state.get_enemies().size() == 1
+        combat_state.add_enemy("Bee")
+        combat_state.add_enemy("Bee")
+        inform("The queen bee calls her brood!")
+        return ""        
+    end
+    option = random(10)
+    if option < 3
+        combat_state.add_enemy("Bee")
+        combat_state.add_enemy("Bee")
+        combat_state.add_enemy("Bee")
+        inform("The bees are swarming!")
+    else if option < 8
+        hurt_player_func_helper(combat_state, 5, "The queen bee jabs you for ")
+    else
+        hurt_player_func_helper(combat_state, 20, "The queen bee impales you for ")
+    end
+end
+
 :name_to_enemy(name)
     if name == "Dragon"
-        Enemy(name, 500, dragon_action)
+        Enemy(name, 500, 999999, dragon_action)
     else if name == "Whelp"
-        Enemy(name, 10, hurt_player_func(5))
+        Enemy(name, 10, 5, hurt_player_func(5, "The whelp spits at you for "))
     else if name == "Centaur"
-        Enemy(name, 50, stomp)
+        Enemy(name, 50, 30, stomp)
+    else if name == "Bee"
+        Enemy(name, 5, 1, hurt_player_func(2, "The bee stings you for "))
+    else if name == "Queen Bee"
+        Enemy(name, 50, 20, queen_bee_combat)
     end
 end
 
@@ -61,5 +92,5 @@ end
 end
 
 :generic_enemies
-    ["Centaur"]
+    ["Centaur", "Queen Bee"]
 end

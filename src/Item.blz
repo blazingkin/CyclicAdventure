@@ -7,6 +7,14 @@ constructor Item(name, worth, use)
         name == other.name
     end
 
+    :show
+        name + " " + worth + " " + use
+    end
+
+    :get_name
+        name
+    end
+
 end
 
 items = []
@@ -19,8 +27,28 @@ items = []
     inform("You are now at "+combat_state.get_player().get_health()+"hp")
 end
 
+:simple_damage_item_helper(item, combat_state, message, damage, crit_chance)
+    enemy = combat_state.get_enemy()
+    dmg = damage + random(0 - damage / 4, damage / 4)
+    crit = random(0, crit_chance) == 0
+    if crit
+        dmg = dmg * 3
+    end
+    enemy.hurt(dmg)
+    inform(message+enemy.name+" for "+dmg+" damage")
+    if crit
+        inform("It's a critical hit!")
+    end
+end
+
+:simple_damage_item(message, damage, crit_chance)
+    item, state -> simple_damage_item_helper(item, state, message, damage, crit_chance)
+end
+
 :name_to_item(name)
     if name == "Small Potion"
         Item(name, 10, use_potion)
+    else if name == "Stick"
+        Item(name, 1, simple_damage_item("You whack your stick at ", 12, 4))
     end
 end

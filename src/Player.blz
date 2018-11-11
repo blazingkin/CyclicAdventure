@@ -4,7 +4,10 @@ require Item
 :use_items(combat_state)
     print("Items")
     items = combat_state.get_player().get_items()
-    names = items.map(x -> x.name)
+    names = []
+    for i = 0; i < items.size(); i++
+        names[i] = items[i].get_name()
+    end
     to_use = get_option_or_go_back(names)
     if (to_use == -1)
         return false
@@ -46,7 +49,7 @@ constructor Player(name, class)
 
     items = [name_to_item("Small Potion"), name_to_item("Small Potion")]
     :acquire_item(item)
-        items.concatenate!(item)
+        items[items.size()] = name_to_item(item)
     end
     :remove_item(item)
         index = -1
