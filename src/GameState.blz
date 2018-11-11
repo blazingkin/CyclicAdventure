@@ -24,7 +24,10 @@ constructor GameState(player, num_levels)
     end
 
     :describe_level
-        print(current_level())
+        human_readable_level = current_level_num + 1
+
+        print("You enter the "+ human_readable_level.ordinal() + " floor")
+        print("You see "+current_level())
     end
 
 end

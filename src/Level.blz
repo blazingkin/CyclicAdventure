@@ -1,7 +1,33 @@
+level_types = ["Swamp", "Forest", "Plains"]
+:get_level_type
+    level_types.sample()
+end
+
+
+swamp_flavor = ["an eeire swamp. The trees stare back at you"]
+forest_flavor = [""]
+plains_flavor = [""]
+
+:level_flavor_text(type)
+    
+    if type == "Swamp"
+        swamp_flavor.sample()
+    else if type == "Forest"
+        forest_flavor.sample()
+    else if type == "Plains"
+        plains_flavor.sample()
+    end
+
+end
+
+
 constructor Level(number)
 
+    type = get_level_type()
+    
+
     :show
-        "Level "+number
+        level_flavor_text(type)
     end
 
 end

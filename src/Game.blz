@@ -66,6 +66,7 @@ end
 :process_input(game_state, input)
     if game_state.location == game_state.overworld
         game_state.advance_level()
+        print_seperator()
     else if game_state.location == game_state.combat
 
     end
