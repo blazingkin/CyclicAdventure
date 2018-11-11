@@ -14,7 +14,9 @@ require Item
     end
 
     action = items[to_use].use
-    action!(items[to_use], combat_state)
+    if action!(items[to_use], combat_state) == false
+        return false
+    end
 
     return true
 end

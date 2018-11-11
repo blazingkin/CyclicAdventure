@@ -25,10 +25,18 @@ items = []
 
     print("The potion restores some health")
     inform("You are now at "+combat_state.get_player().get_health()+"hp")
+    return true
 end
 
 :simple_damage_item_helper(item, combat_state, message, damage, crit_chance)
-    enemy = combat_state.get_enemy()
+    print("Who would you like to hit?")
+    enemies = combat_state.get_enemies()
+    enemy_names = enemies.map(x -> x.name + " - " +x.health + "hp")
+    enemy_number = get_option_or_go_back(enemy_names)
+    if enemy_number == -1
+        return false
+    end
+    enemy = combat_state.get_enemies()[enemy_number]
     dmg = damage + random(0 - damage / 4, damage / 4)
     crit = random(0, crit_chance) == 0
     if crit
@@ -39,6 +47,7 @@ end
     if crit
         inform("It's a critical hit!")
     end
+    return true
 end
 
 :simple_damage_item(message, damage, crit_chance)
@@ -55,6 +64,12 @@ end
         enemy.hurt(dmg)
         inform(spells.sample() + enemy.name + " dealing "+dmg+" damage")
     end
+    return true
+end
+
+:meme_text(msg)
+    inform(msg)
+    return false
 end
 
 :name_to_item(name)
@@ -65,6 +80,16 @@ end
     else if name == "Mystic Staff"
         Item(name, 50, mystic_staff)
     else if name == "Squirrel Hide"
-        Item(name, 25, x,y -> inform("It feels soft to the touch. Probably not very good for combat though."))
+        Item(name, 25, (x,y -> meme_text("It feels soft to the touch. Probably not very good for combat though.")))
+    else if name == "Doot Doot Horn"
+        Item(name, 100, (x,y -> meme_text("Doot Doot")))
     end
 end
+
+## Doot doot horn
+## Napalm
+## Blanket
+## Knife
+## Longsword
+## Slingshot
+## Rock
