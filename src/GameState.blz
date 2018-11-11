@@ -1,0 +1,31 @@
+import Lists
+require Player
+require Level
+
+
+
+constructor GameState(player, num_levels)
+    # Enum of locations
+    overworld = "Overworld"
+    combat = "Combat"
+
+    location = overworld
+    levels = range(num_levels).map!(x -> Level(x))
+    current_level_num = 0
+
+    :advance_level
+        current_level_num++
+        current_level_num = current_level_num % num_levels
+        current_level_num
+    end
+
+    :current_level
+        levels[current_level_num]
+    end
+
+    :describe_level
+        print(current_level())
+    end
+
+end
+

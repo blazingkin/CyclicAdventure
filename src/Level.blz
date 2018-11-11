@@ -1,0 +1,7 @@
+constructor Level(number)
+
+    :show
+        "Level "+number
+    end
+
+end

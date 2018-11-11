@@ -1,0 +1,72 @@
+require GameState
+require Player
+require Class
+
+:print_seperator
+    print("==========")
+end
+
+:main
+    print("Welcome to cyclic adventure!!")
+    print("You can quit at any time by typing exit")
+    print_seperator()
+    gs = setup_game()
+    while loop!(gs)
+    end
+end
+
+:loop(game_state)
+    prompt(game_state)
+    input = string_input()
+    if input == "exit"
+        return false
+    end
+    process_input!(game_state, input)
+    return true
+end
+
+:prompt(game_state)   
+    if game_state.location == game_state.overworld
+        game_state.describe_level()
+    else if game_state.location == game_state.combat
+
+    end
+end
+
+# This is the first state of the game.
+:setup_game()
+
+    # Prompt the player for characteristics
+    print("What is your name?")
+    name = string_input()
+    print_seperator()
+    valid = false
+    while valid != true
+        print("What is your class?")
+        classes().each(x, i -> print(i+". "+x))
+        class_number = number_input()
+        valid = class_number < classes().size()
+    end
+    print_seperator()
+    player = Player(name, class_name(class_number))
+    print("Welcome "+player)
+
+
+    print_seperator()
+    print("How many rooms do you want to play with?")
+    valid = false
+    while valid != true
+        num_levels = number_input()
+        valid = num_levels > 0
+    end
+    print_seperator()
+    GameState(player, num_levels)
+end
+
+:process_input(game_state, input)
+    if game_state.location == game_state.overworld
+        game_state.advance_level()
+    else if game_state.location == game_state.combat
+
+    end
+end

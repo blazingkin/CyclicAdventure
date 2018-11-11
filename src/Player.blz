@@ -1,0 +1,28 @@
+constructor Player(name, class)
+    max_health = 100
+    health = max_health
+
+    strength = class.base_strength
+    agility = class.base_agility
+    intelligence = class.base_intelligence
+
+    :current_strength
+        strength
+    end
+
+    :current_agility
+        agility
+    end
+
+    :current_intelligence
+        intelligence
+    end
+
+    :show
+        result = name + " the " + class + "\n"
+        result = result + current_strength() + " STR - " + current_agility() + " AGI - " + current_intelligence() +" INT\n"
+        result = result + health + "/" + max_health + " health"
+        result
+    end
+
+end
