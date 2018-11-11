@@ -53,13 +53,23 @@ end
     game_state -> game_state.player.acquire_item(item)
 end
 
+:squirrel(game_state)
+    if game_state.player.agility > 15
+        inform("You catch the squirrel")
+        game_state.player.acquire_item("Squirrel Hide")
+        inform("Squirrel Hide obtained")
+    else
+        inform("It was too fast and got away")
+    end
+end
+
 :get_function_from_option(option)
     if option == "Continue"
         next_level
     else if option == "You see a dead body. Poke it?"
         x -> inform("It jiggles. Gross!!")
     else if option == "A squirrel runs by. Chase it?"
-        x -> inform("It was too fast and got away")
+        squirrel
     else if option == "Nap"
         nap
     else if option == "You see a stranger. Approach them?"

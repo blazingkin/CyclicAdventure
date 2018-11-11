@@ -73,17 +73,32 @@ constructor Level(number)
     options = generate_options(type)
     option_functions = options.map(x -> get_function_from_option(x))
 
+    hidden_options = []
+
     :number_of_options
-        options.size()
+        options.size() - hidden_options.size()
+    end
+
+    :effective_options
+        options.filter(x -> hidden_options.contains?(x) == false)
+    end
+
+    :effective_option_functions
+        effective_options().map(x -> get_function_from_option(x))
     end
 
     :execute_option(num, game_state)
-        func = option_functions[num]
+        func = effective_option_functions()[num]
+        hidden_options[hidden_options.size()] = effective_options()[num]
         func!(game_state)
     end
 
     :show
         level_flavor_text(type)
+    end
+
+    :reset_hidden
+        hidden_options = []
     end
 
 end

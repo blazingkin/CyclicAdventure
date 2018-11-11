@@ -19,6 +19,7 @@ constructor GameState(player, num_levels)
     current_level_num = 0
 
     :advance_level
+        current_level().reset_hidden()
         current_level_num++
         current_level_num = current_level_num % num_levels
         current_level_num
@@ -42,7 +43,7 @@ constructor GameState(player, num_levels)
     end
 
     :print_options
-        current_level().options.each(x, i -> print(i+". "+x))
+        current_level().effective_options().each(x, i -> print(i+". "+x))
     end
 
     :start_combat(enemies_names)

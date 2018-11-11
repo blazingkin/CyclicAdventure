@@ -45,10 +45,26 @@ end
     item, state -> simple_damage_item_helper(item, state, message, damage, crit_chance)
 end
 
+:mystic_staff(item, combat_state)
+    to_hit = random(1, 3)
+    spells = ["You launch a fireball at ", "A spark shoots out of the end of your staff at ", "You bash your staff at "]
+    for i = 0; i < to_hit; i++
+        enemy = combat_state.get_enemy()
+        dmg = combat_state.get_player().intelligence * 2
+        dmg = dmg + random(-5, 5)
+        enemy.hurt(dmg)
+        inform(spells.sample() + enemy.name + " dealing "+dmg+" damage")
+    end
+end
+
 :name_to_item(name)
     if name == "Small Potion"
         Item(name, 10, use_potion)
     else if name == "Stick"
         Item(name, 1, simple_damage_item("You whack your stick at ", 12, 4))
+    else if name == "Mystic Staff"
+        Item(name, 50, mystic_staff)
+    else if name == "Squirrel Hide"
+        Item(name, 25, x,y -> inform("It feels soft to the touch. Probably not very good for combat though."))
     end
 end

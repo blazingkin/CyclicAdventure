@@ -42,12 +42,12 @@ constructor Player(name, class)
     agility = class.base_agility
     intelligence = class.base_intelligence
     gold = class.base_gold
+    items = class.starting_items
 
     max_health = strength * 10
     health = max_health
 
 
-    items = [name_to_item("Small Potion"), name_to_item("Small Potion")]
     :acquire_item(item)
         items[items.size()] = name_to_item(item)
     end

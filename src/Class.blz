@@ -1,3 +1,4 @@
+require Item
 constructor Class(type)
 
     if type == "Knight"
@@ -5,11 +6,13 @@ constructor Class(type)
         base_agility = 10
         base_intelligence = 3
         base_gold = 100
+        starting_items = [name_to_item("Small Potion"), name_to_item("Small Potion")]
     else if type == "Mage"
         base_strength = 5
         base_agility = 5
         base_intelligence = 15
         base_gold = 75
+        starting_items = [name_to_item("Small Potion"), name_to_item("Mystic Staff")]
     end
 
 

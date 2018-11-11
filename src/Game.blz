@@ -72,6 +72,7 @@ end
             print("Please enter a valid option")
             return ""
         end
+
         game_state.current_level().execute_option(input, game_state)
         print_seperator()
     else if game_state.location == game_state.combat
