@@ -93,8 +93,6 @@ end
             return ""
         end
 
-        print_seperator()
-
         ## End players turn 
         game_state.get_combat_state().next()
         if game_state.get_combat_state().over?()

@@ -1,3 +1,4 @@
+import GameUtil
 constructor Enemy(name, starting_health, on_act)
 
     health = starting_health
@@ -23,16 +24,42 @@ constructor Enemy(name, starting_health, on_act)
 
 end
 
+:hurt_player_func(dmg)
+    combat_state -> combat_state.player.hurt(dmg + random(0 - dmg/4, dmg/4))
+end
+
 :dragon_action(combat_state)
-    combat_state.player.hurt(10)
+    option = random(2)
+    if option == 0
+        damage = 30 + random(-5, 5)
+        combat_state.player.hurt(damage)
+        inform("The dragon roasts you for "+damage+" damage")
+    else
+        combat_state.add_enemy("Whelp")
+        inform("The dragon summons an underling")
+    end
+end
+
+:stomp(combat_state)
+    damage = 10 + random(-2, 5)
+    combat_state.player.hurt(damage)
+    inform("The centaur stomps you for "+damage+" damage")
 end
 
 :name_to_enemy(name)
     if name == "Dragon"
-        Enemy(name, 100, dragon_action)
+        Enemy(name, 500, dragon_action)
+    else if name == "Whelp"
+        Enemy(name, 10, hurt_player_func(5))
+    else if name == "Centaur"
+        Enemy(name, 50, stomp)
     end
 end
 
 :names_to_enemies(names)
     names.map(name_to_enemy)
+end
+
+:generic_enemies
+    ["Centaur"]
 end

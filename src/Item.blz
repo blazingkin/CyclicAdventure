@@ -1,7 +1,26 @@
-# use signature is CombatState -> void
+import GameUtil
+
+# use signature is Item, CombatState -> void
 constructor Item(name, worth, use)
 
+    :==(other)
+        name == other.name
+    end
 
 end
 
 items = []
+
+:use_potion(item, combat_state)
+    combat_state.get_player().heal(25)
+    combat_state.get_player().remove_item(item)
+
+    print("The potion restores some health")
+    inform("You are now at "+combat_state.get_player().get_health()+"hp")
+end
+
+:name_to_item(name)
+    if name == "Small Potion"
+        Item(name, 10, use_potion)
+    end
+end

@@ -41,12 +41,16 @@ constructor CombatState(player, enemies_names)
         enemies
     end
 
+    :add_enemy(name)
+        enemies[enemies.size()] = name_to_enemy(name)
+    end
+
     :show
         result = ""
-        for i = 0; i < enemies.size(); i++
-            result = result + enemies[i].show()
+        for i = 0; i < enemies.size() - 1; i++
+            result = result + enemies[i].show() + "\n"
         end
-        result
+        result + enemies[enemies.size() - 1].show()
     end
 
 end

@@ -54,7 +54,7 @@ end
         end
     end
 
-    generic_options = ["You see a stranger. Approach them?"]
+    generic_options = ["You see a stranger. Approach them?", "Look for a fight"]
     len = random(1, generic_options.size())
     for i = 0; i < len; i++
         options[options.size()] = generic_options.sample()

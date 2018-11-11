@@ -1,4 +1,5 @@
 import GameUtil
+require Item
 
 :use_items(combat_state)
     print("Items")
@@ -8,6 +9,9 @@ import GameUtil
     if (to_use == -1)
         return false
     end
+
+    action = items[to_use].use
+    action!(items[to_use], combat_state)
 
     return true
 end
@@ -24,6 +28,8 @@ end
     damage = (combat_state.get_player().strength * 2) + random(-5, 5)
 
     enemies[enemy_number].hurt(damage)
+    enemy_name = enemies[enemy_number].name
+    inform("You hit the "+enemy_name+" for "+damage+" damage")
     return true
 end
 
@@ -38,9 +44,20 @@ constructor Player(name, class)
     health = max_health
 
 
-    items = []
+    items = [name_to_item("Small Potion"), name_to_item("Small Potion")]
     :acquire_item(item)
         items.concatenate!(item)
+    end
+    :remove_item(item)
+        index = -1
+        for i = 0; i < items.size(); i++
+            if items[i] == item
+                index = i
+            end
+        end
+        if index != -1
+            items.remove!(index)
+        end
     end
     :get_items
         items
