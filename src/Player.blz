@@ -1,3 +1,16 @@
+:get_option_or_go_back(combat_state, options)
+    print("0. Go Back")
+    
+end
+
+:items(combat_state)
+
+end
+
+:punch(combat_state)
+
+end
+
 constructor Player(name, class)
 
     strength = class.base_strength
@@ -7,6 +20,16 @@ constructor Player(name, class)
 
     max_health = strength * 10
     health = max_health
+
+
+    items = []
+    :acquire_item(item)
+        items.concatenate!(item)
+    end
+
+    :actions
+        [["Punch"]]
+    end
 
     :current_strength
         strength

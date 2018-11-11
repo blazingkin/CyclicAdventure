@@ -10,7 +10,7 @@ end
     inform("You recover 5 health.")
 end
 
-:talk_to_stranger(game_statehurt)
+:talk_to_stranger(game_state)
     event = random(3)
     if event == 0
         print("They appear to be friendly and in a talkative mood")
