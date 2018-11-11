@@ -29,8 +29,16 @@ constructor CombatState(player, enemies_names)
         enemies.empty?() || player.get_health() <= 0
     end
 
+    :get_player
+        player
+    end
+
     :get_enemy
         enemies.sample()
+    end
+
+    :get_enemies
+        enemies
     end
 
     :show

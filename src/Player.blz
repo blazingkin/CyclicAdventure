@@ -1,14 +1,30 @@
-:get_option_or_go_back(combat_state, options)
-    print("0. Go Back")
-    
-end
+import GameUtil
 
-:items(combat_state)
+:use_items(combat_state)
+    print("Items")
+    items = combat_state.get_player().get_items()
+    names = items.map(x -> x.name)
+    to_use = get_option_or_go_back(names)
+    if (to_use == -1)
+        return false
+    end
 
+    return true
 end
 
 :punch(combat_state)
+    print("Who would you like to punch?")
+    enemies = combat_state.get_enemies()
+    enemy_names = enemies.map(x -> x.name + " - " +x.health + "hp")
+    enemy_number = get_option_or_go_back(enemy_names)
+    if enemy_number == -1
+        return false
+    end
 
+    damage = (combat_state.get_player().strength * 2) + random(-5, 5)
+
+    enemies[enemy_number].hurt(damage)
+    return true
 end
 
 constructor Player(name, class)
@@ -26,9 +42,12 @@ constructor Player(name, class)
     :acquire_item(item)
         items.concatenate!(item)
     end
+    :get_items
+        items
+    end
 
     :actions
-        [["Punch"]]
+        [["Punch", punch], ["Use item", use_items]]
     end
 
     :current_strength

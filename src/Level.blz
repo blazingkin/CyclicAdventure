@@ -57,7 +57,7 @@ end
     generic_options = ["You see a stranger. Approach them?"]
     len = random(1, generic_options.size())
     for i = 0; i < len; i++
-        options[generic_options.size()] = generic_options.sample()
+        options[options.size()] = generic_options.sample()
     end
 
     options.unique()

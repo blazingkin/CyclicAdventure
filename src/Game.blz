@@ -32,6 +32,7 @@ end
         game_state.print_options()
     else if game_state.location == game_state.combat
         game_state.describe_combat()
+        game_state.player.actions().each(x, i -> print(i+". "+(x[0])))
     end
 end
 
@@ -74,14 +75,39 @@ end
         game_state.current_level().execute_option(input, game_state)
         print_seperator()
     else if game_state.location == game_state.combat
+        
+        if game_state.get_combat_state().over?()
+            game_state.end_combat()
+        end
+
+        if input >= game_state.player.actions().size() || input < 0
+            print("Please enter a valid option")
+            return ""
+        end
+
+        action = game_state.player.actions()
+        action = action[input]
+        action = action[1]
+
+        if action!(game_state.get_combat_state()) == false
+            return ""
+        end
+
+        print_seperator()
+
+        ## End players turn 
         game_state.get_combat_state().next()
         if game_state.get_combat_state().over?()
             game_state.end_combat()
         end
+
+        ## Take enemies turn
         game_state.get_combat_state().enemies_take_turn()
         game_state.get_combat_state().next()
         if game_state.get_combat_state().over?()
             game_state.end_combat()
         end
+
+
     end
 end

@@ -55,7 +55,7 @@ constructor GameState(player, num_levels)
     end
 
     :end_combat()
-
+        location = overworld
     end
 
 end

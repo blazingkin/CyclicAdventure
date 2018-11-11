@@ -6,3 +6,16 @@ end
 :print_seperator
     print("==========")
 end
+
+:get_option_or_go_back(options)
+    print("0. Go Back")
+    for i = 0; i < options.size(); i++
+        print((i + 1)+". "+options[i])
+    end
+    valid = false
+    while valid == false
+        num = number_input()
+        valid = num >= 0 && num <= options.size()
+    end
+    return num - 1
+end
