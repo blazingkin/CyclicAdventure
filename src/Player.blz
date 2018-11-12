@@ -3,10 +3,15 @@ require Item
 
 :use_items(combat_state)
     print("Items")
-    items = combat_state.get_player().get_items()
+    all_items = combat_state.get_player().get_items()
+    items = all_items.unique()
     names = []
     for i = 0; i < items.size(); i++
+        count = all_items.filter(x -> x == items[i]).size()
         names[i] = items[i].get_name()
+        if count != 1
+            names[i] = names[i] + " (x"+count+")"
+        end
     end
     to_use = get_option_or_go_back(names)
     if (to_use == -1)
