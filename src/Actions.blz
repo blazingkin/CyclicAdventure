@@ -121,7 +121,7 @@ end
 end
 
 :squirrel(game_state)
-    if game_state.player.agility > 15
+    if game_state.player.current_agility() > 15
         inform("You catch the squirrel")
         game_state.player.acquire_item("Squirrel Hide")
         inform("Squirrel Hide obtained")

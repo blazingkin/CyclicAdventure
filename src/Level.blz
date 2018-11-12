@@ -1,5 +1,5 @@
 require Actions
-level_types = ["Swamp", "Forest", "Plains", "Shop"]
+level_types = ["Swamp", "Forest", "Plains"]
 :get_level_type
     level_types.sample()
 end
@@ -73,6 +73,8 @@ end
 constructor Level(number)
     if number == 0
         type = "Boss"
+    else if number == 1
+        type = "Shop"
     else
         type = get_level_type()
     end

@@ -56,10 +56,10 @@ end
     print_seperator()
     player = Player(name, class_name(class_number))
     print("Welcome "+player)
-    string_input()
+    inform("Press enter to continue")
 
     print_seperator()
-    print("How many rooms do you want to play with?")
+    print("How many rooms do you want to play with? 5 is small. 10 is average. 15 is large")
     valid = false
     while valid != true
         num_levels = number_input()

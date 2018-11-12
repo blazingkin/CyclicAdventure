@@ -32,7 +32,7 @@ items = []
     return true
 end
 
-:simple_damage_item_helper(item, combat_state, message, damage, crit_chance)
+:simple_damage_item_helper(item, combat_state, message, damage, crit_chance, should_remove)
     print("Who would you like to hit?")
     enemies = combat_state.get_enemies()
     enemy_names = enemies.map(x -> x.name + " - " +x.health + "hp")
@@ -51,19 +51,22 @@ end
     if crit
         inform("It's a critical hit!")
     end
+    if should_remove.nil?() == false && should_remove == true
+        combat_state.get_player().remove_item(item)
+    end
     return true
 end
 
-:complex_damage_item_helper(item, state, message, damage_formula, crit_chance)
-    simple_damage_item_helper(item, state, message, damage_formula(state), crit_chance)
+:complex_damage_item_helper(item, state, message, damage_formula, crit_chance, should_remove)
+    simple_damage_item_helper(item, state, message, damage_formula(state), crit_chance, should_remove)
 end
 
-:complex_damage_item(message, damage_formula, crit_chance)
-    item, state -> complex_damage_item_helper(item, state, message, damage_formula, crit_chance)
+:complex_damage_item(message, damage_formula, crit_chance, should_remove)
+    item, state -> complex_damage_item_helper(item, state, message, damage_formula, crit_chance, should_remove)
 end
 
-:simple_damage_item(message, damage, crit_chance)
-    item, state -> simple_damage_item_helper(item, state, message, damage, crit_chance)
+:simple_damage_item(message, damage, crit_chance, should_remove)
+    item, state -> simple_damage_item_helper(item, state, message, damage, crit_chance, should_remove)
 end
 
 :mystic_staff(item, combat_state)
@@ -71,7 +74,7 @@ end
     spells = ["You launch a fireball at ", "A spark shoots out of the end of your staff at ", "You bash your staff at "]
     for i = 0; i < to_hit; i++
         enemy = combat_state.get_enemy()
-        dmg = combat_state.get_player().intelligence
+        dmg = combat_state.get_player().current_intelligence()
         dmg = dmg + random(-5, 5)
         enemy.hurt(dmg)
         inform(spells.sample() + enemy.name + " dealing "+dmg+" damage")
@@ -89,7 +92,7 @@ end
         # If they have a rock, then they can use it
         combat_state.get_player().remove_item(name_to_item("Rock"))
         enemy = combat_state.get_enemy()
-        dmg = combat_state.get_player().strength + combat_state.get_player().agility
+        dmg = combat_state.get_player().strength + combat_state.get_player().current_agility()
         dmg = dmg + random(-3, 5)
         enemy.hurt(dmg)
         inform("You shot the "+enemy.name+" with a rock for "+dmg+" damage")
@@ -100,7 +103,7 @@ end
 end
 
 :shop_items
-    names = ["Small Potion", "Potion", "Large Potion", "Sling", "Broadsword", "Knife"]
+    names = ["Small Potion", "Potion", "Large Potion", "Sling", "Broadsword", "Dagger"]
     names.map(x -> name_to_item(x))
 end
 
@@ -123,13 +126,13 @@ end
 end
 
 :healing_hand_item(item, combat_state)
-    healing_amount = combat_state.get_player().intelligence * 2
+    healing_amount = combat_state.get_player().current_intelligence() * 2
     combat_state.get_player().heal(healing_amount)
     inform("You have healed yourself for "+healing_amount)
 end
 
 :firestorm_item(item, combat_state)
-    base_dmg = (combat_state.get_player().intelligence / 2).floor()
+    base_dmg = (combat_state.get_player().current_intelligence() / 2).floor()
     for i = 0; i < combat_state.get_enemies().size(); i++
         enemy = combat_state.get_enemies()[i]
         dmg = base_dmg + random(-5, 3)
@@ -154,15 +157,15 @@ end
     else if name == "Doot Doot Horn"
         Item(name, 100, (x,y -> meme_text("Doot Doot")))
     else if name == "Rock"
-        Item(name, 1, simple_damage_item("You throw a rock at ", 5, 3))
+        Item(name, 1, simple_damage_item("You throw a rock at ", 5, 3, true))
     else if name == "Sling"
         Item(name, 20, sling)
     else if name == "Broadsword"
         Item(name, 300, simple_damage_item("You cleave the enemy ", 50, 2))
-    else if name == "Knife"
+    else if name == "Dagger"
         Item(name, 200, simple_damage_item("You stab at the enemy ", 30, 3))
     else if name == "Lightning Strike"
-        Item(name, 0, complex_damage_item("You cast a lightning bolt at ", (state -> state.get_player().intelligence + random(0, 10)), 3))
+        Item(name, 0, complex_damage_item("You cast a lightning bolt at ", (state -> (state.get_player().current_intelligence() * 2) + random(0, 10)), 3))
     else if name == "Execute"
         Item(name, 0, execute_item)
     else if name == "Healing Hand"
