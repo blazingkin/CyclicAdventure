@@ -1,14 +1,15 @@
 require Actions
-level_types = ["Swamp", "Forest", "Plains"]
+level_types = ["Swamp", "Forest", "Plains", "Shop"]
 :get_level_type
     level_types.sample()
 end
 
 
-swamp_flavor = ["an eeire swamp. The trees stare back at you", "the bubbling muck of a swamp. Something smells off"]
-forest_flavor = ["trees as far as the eye can see", "a squirrel dash up a tree"]
-plains_flavor = ["grass blowing in the wind", "cows grazing in the distance"]
-boss_flavor = ["a giant dragon standing before you, devastating the landscape", "a horrifying lizard terrorizing the town"]
+swamp_flavor = ["an eeire swamp. The trees stare back at you", "the bubbling muck of a swamp. Something smells off", "a rather dreary expanse in front of you."]
+forest_flavor = ["trees as far as the eye can see", "a squirrel dash up a tree", "the path ahead curve around a tall oak"]
+plains_flavor = ["grass blowing in the wind", "cows grazing in the distance", "an endless expanse of fields. The sun beats down on you"]
+shop_flavor = ["a merchant waving you towards his stand"]
+boss_flavor = ["a giant dragon standing before you, devastating the landscape", "a horrifying lizard terrorizing the town", "a terrifying lizard preparing to strike the town"]
 
 :level_flavor_text(type)
     
@@ -18,6 +19,8 @@ boss_flavor = ["a giant dragon standing before you, devastating the landscape", 
         forest_flavor.sample()
     else if type == "Plains"
         plains_flavor.sample()
+    else if type == "Shop"
+        shop_flavor.sample()
     else if type == "Boss"
         boss_flavor.sample()
     end
@@ -31,6 +34,9 @@ end
 
     if type == "Boss"
         options = ["Continue", "Face the dragon"]
+        return options
+    else if type == "Shop"
+        options = ["Continue", "Shop"]
         return options
     end
 

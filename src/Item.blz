@@ -15,6 +15,10 @@ constructor Item(name, worth, use)
         name
     end
 
+    :sell_price
+        (worth * 1.3).floor()
+    end
+
 end
 
 items = []
@@ -72,10 +76,10 @@ end
     return false
 end
 
-:sling(combat_state)
+:sling(item, combat_state)
     if combat_state.get_player().get_items().contains?(name_to_item("Rock"))
         # If they have a rock, then they can use it
-        combat_state.get_player().get_items().remove_item(name_to_item("Rock"))
+        combat_state.get_player().remove_item(name_to_item("Rock"))
         enemy = combat_state.get_enemy()
         dmg = combat_state.get_player().strength + combat_state.get_player().agility
         dmg = dmg + random(-3, 5)
@@ -85,6 +89,11 @@ end
         # Otherwise, meme text
         meme_text("This seems rather useless")
     end
+end
+
+:shop_items
+    names = ["Small Potion", "Squirrel Hide", "Sling", "Rock"]
+    names.map(x -> name_to_item(x))
 end
 
 :name_to_item(name)

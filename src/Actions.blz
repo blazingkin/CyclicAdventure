@@ -1,14 +1,76 @@
 import GameUtil
 require Enemy
+require Item
+
+:shop_buy_helper(game_state, inventory)
+    names_and_prices = inventory.map(x -> x.name + " - "+x.sell_price())
+    option = get_option_or_go_back(names_and_prices)
+    while option != -1
+        # Make sure the option is valid
+        if option >= 0 && option < inventory.size() 
+            item_buying = inventory[option]
+            if game_state.player.current_gold() >= item_buying.sell_price()
+                game_state.player.change_gold(0 - item_buying.sell_price())
+                inventory.remove!(option)
+                game_state.player.acquire_item(item_buying.name)
+                inform("You bought a "+item_buying.name)
+                inform("You have "+game_state.player.current_gold()+" gold remaining")
+            else
+                inform("Sorry, you don't have enough gold")
+            end
+        end
+        names_and_prices = inventory.map(x -> x.name + " - "+x.sell_price())
+        option = get_option_or_go_back(names_and_prices)
+    end
+end
+
+:shop_sell_helper(game_state, inventory)
+    names_and_prices = game_state.player.get_items().map(x -> x.name + " - " + x.worth)
+    option = get_option_or_go_back(names_and_prices)
+    while option != -1
+        # Make sure the option is valid
+        if option >= 0 && option < game_state.player.get_items().size()
+            item_selling = game_state.player.get_items()[option]
+            game_state.player.change_gold(item_selling.worth)
+            game_state.player.remove_item(item_selling)
+            inventory[inventory.size()] = item_selling
+            inform("You sold your "+item_selling.name)
+            inform("You now have "+game_state.player.current_gold() + " gold")
+        end
+        names_and_prices = game_state.player.get_items().map(x -> x.name + " - " + x.worth)
+        option = get_option_or_go_back(names_and_prices)
+    end
+end
+
+:shop(game_state)
+    items_selling = []
+    num_selling = random(3, shop_items().size())
+    for i = 0; i < num_selling; i++
+        items_selling[i] = shop_items().sample()
+    end
+    print("Welcome to my shop! Buying or selling?")
+    option = get_option_or_go_back(["Buying", "Selling"])
+    while option != -1
+        if option == 0
+        # Buying
+            shop_buy_helper!(game_state, items_selling)
+        else
+        # Selling
+            shop_sell_helper!(game_state, items_selling)
+        end
+        option = get_option_or_go_back(["Buying", "Selling"])
+    end
+end
+
 # Advance to the next level
 :next_level(game_state)
     game_state.advance_level()
 end
 
 :nap(game_state)
-    game_state.player.heal(5)
+    game_state.player.heal(50)
     print("You take a nice relaxing nap.")
-    inform("You recover 5 health.")
+    inform("You recover 50 health.")
 end
 
 :talk_to_stranger(game_state)
@@ -71,6 +133,8 @@ end
 :get_function_from_option(option)
     if option == "Continue"
         next_level
+    else if option == "Shop"
+        shop
     else if option == "You see a dead body. Poke it?"
         x -> inform("It jiggles. Gross!!")
     else if option == "A squirrel runs by. Chase it?"

@@ -116,6 +116,10 @@ constructor Player(name, class)
         end
     end
 
+    :current_gold
+        gold
+    end
+
     :show
         result = name + " the " + class + "\n"
         result = result + current_strength() + " STR - " + current_agility() + " AGI - " + current_intelligence() +" INT\n"
