@@ -49,6 +49,7 @@ end
         items_selling[i] = shop_items().sample()
     end
     print("Welcome to my shop! Buying or selling?")
+    print("You have "+game_state.player.current_gold() + " gold")
     option = get_option_or_go_back(["Buying", "Selling"])
     while option != -1
         if option == 0
@@ -95,6 +96,7 @@ end
 :potion_master(game_state)
     done = 0
     while done != -1
+        print("You see several potions")
         done = get_option_or_go_back(["Strength Potion", "Dragon-Slaying Potion", "Gold Potion", "Aphrodesiac Potion"])
         if done != -1
             inform("You are not strong enough for my potions traveller")
@@ -157,13 +159,23 @@ end
     inform("The wizard has bestowed upon you the spell of "+new_spell.name)
 end
 
+:poke_dead_body(game_state)
+    option = random(3)
+    if option == 0
+        inform("Looks like it's a bit undead!")
+        game_state.start_combat(["Zombie"])
+    else
+        inform("It jiggles. Gross!!")
+    end
+end
+
 :get_function_from_option(option)
     if option == "Continue"
         next_level
     else if option == "Shop"
         shop
     else if option == "You see a dead body. Poke it?"
-        x -> inform("It jiggles. Gross!!")
+        poke_dead_body
     else if option == "A squirrel runs by. Chase it?"
         squirrel
     else if option == "Nap"

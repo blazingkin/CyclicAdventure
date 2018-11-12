@@ -30,7 +30,7 @@ end
         return false
     end
 
-    damage = (combat_state.get_player().strength * 2) + random(-5, 5)
+    damage = (combat_state.get_player().current_strength() * 1.5).floor() + random(-5, 5)
 
     enemies[enemy_number].hurt(damage)
     enemy_name = enemies[enemy_number].name
