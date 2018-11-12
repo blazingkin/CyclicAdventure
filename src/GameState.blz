@@ -55,7 +55,17 @@ constructor GameState(player, num_levels)
         combat_state
     end
 
-    :end_combat()
+    :end_combat
+        inform("You win!")
+        gold_dropped = combat_state.dead_enemies.fold_left(0, (sum, enemy -> sum + enemy.bounty))
+        player.change_gold(gold_dropped)
+        inform("You found "+gold_dropped+" gold!")
+        agi_gain = random(1, 3)
+        str_gain = random(0, 3)
+        int_gain = random(0, 3)
+        player.increase_stats(str_gain, agi_gain, int_gain)
+        inform("Stats increased!")
+        inform(player)
         location = overworld
     end
 

@@ -46,8 +46,12 @@ constructor Player(name, class)
     gold = class.base_gold
     items = class.starting_items
 
-    max_health = strength * 10
-    health = max_health
+    :max_health
+        strength * 10
+    end
+    
+    health = max_health()
+
 
 
     :acquire_item(item)
@@ -84,10 +88,16 @@ constructor Player(name, class)
         intelligence
     end
 
+    :increase_stats(str, agi, int)
+        strength = strength + str
+        agility = agility + agi
+        intelligence = intelligence + int
+    end
+
     :heal(amount)
         health = health + amount
-        if health > max_health
-            health = max_health
+        if health > max_health()
+            health = max_health()
         end
     end
 
@@ -110,13 +120,13 @@ constructor Player(name, class)
         result = name + " the " + class + "\n"
         result = result + current_strength() + " STR - " + current_agility() + " AGI - " + current_intelligence() +" INT\n"
         result = result + gold +" gold\n"
-        result = result + health + "/" + max_health + " health"
+        result = result + health + "/" + max_health() + " health"
         result
     end
 
     :print_combat_info()
         result = name + " the " + class + "\n"
-        result = result + health + "/" + max_health + " health"
+        result = result + health + "/" + max_health() + " health"
         print(result)
     end
 

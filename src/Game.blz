@@ -79,6 +79,7 @@ end
         
         if game_state.get_combat_state().over?()
             game_state.end_combat()
+            return ""
         end
 
         if input >= game_state.player.actions().size() || input < 0
@@ -98,6 +99,7 @@ end
         game_state.get_combat_state().next()
         if game_state.get_combat_state().over?()
             game_state.end_combat()
+            return ""
         end
 
         ## Take enemies turn
@@ -105,6 +107,7 @@ end
         game_state.get_combat_state().next()
         if game_state.get_combat_state().over?()
             game_state.end_combat()
+            return ""
         end
 
 

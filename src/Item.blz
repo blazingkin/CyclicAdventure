@@ -72,6 +72,21 @@ end
     return false
 end
 
+:sling(combat_state)
+    if combat_state.get_player().get_items().contains?(name_to_item("Rock"))
+        # If they have a rock, then they can use it
+        combat_state.get_player().get_items().remove_item(name_to_item("Rock"))
+        enemy = combat_state.get_enemy()
+        dmg = combat_state.get_player().strength + combat_state.get_player().agility
+        dmg = dmg + random(-3, 5)
+        enemy.hurt(dmg)
+        inform("You shot the "+enemy.name+" with a rock for "+dmg+" damage")
+    else
+        # Otherwise, meme text
+        meme_text("This seems rather useless")
+    end
+end
+
 :name_to_item(name)
     if name == "Small Potion"
         Item(name, 10, use_potion)
@@ -83,6 +98,12 @@ end
         Item(name, 25, (x,y -> meme_text("It feels soft to the touch. Probably not very good for combat though.")))
     else if name == "Doot Doot Horn"
         Item(name, 100, (x,y -> meme_text("Doot Doot")))
+    else if name == "Rock"
+        Item(name, 1, simple_damage_item("You throw a rock at ", 5, 3))
+    else if name == "Sling"
+        Item(name, 20, sling)
+    else
+        throw "Invalid item name "+ name
     end
 end
 
