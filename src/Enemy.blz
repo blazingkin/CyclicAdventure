@@ -73,6 +73,16 @@ end
     end
 end
 
+:skeleton_king_combat(combat_state)
+    option = random(2)
+    if option == 0
+        combat_state.add_enemy("Skeleton Warrior")
+    else
+        combat_state.add_enemy("Skeleton Archer")
+    end
+    inform("The king rises another minion")
+end
+
 :name_to_enemy(name)
     if name == "Dragon"
         Enemy(name, 500, 999999, dragon_action)
@@ -84,6 +94,16 @@ end
         Enemy(name, 5, 1, hurt_player_func(2, "The bee stings you for "))
     else if name == "Queen Bee"
         Enemy(name, 50, 20, queen_bee_combat)
+    else if name == "Feral Dog"
+        Enemy(name, 30, 10, hurt_player_func(6, "The dog bites you for "))
+    else if name == "Skeleton Warrior"
+        Enemy(name, 20, 5, hurt_player_func(7, "The skeleton strikes you with his sword for "))
+    else if name == "Skeleton Archer"
+        Enemy(name, 25, 7, hurt_player_func(10, "The skeleton's arrow pierces you for "))
+    else if name == "Skeleton King"
+        Enemy(name, 100, 500, skeleton_king_combat)
+    else
+        throw "Invalid enemy name "+name
     end
 end
 
@@ -92,5 +112,5 @@ end
 end
 
 :generic_enemies
-    ["Centaur", "Queen Bee"]
+    ["Centaur", "Queen Bee", "Feral Dog", "Skeleton Warrior", "Skeleton Archer"]
 end

@@ -23,6 +23,9 @@ end
         print("You have died! Try again!")
         return false
     end
+    if game_state.location == game_state.done
+        return false
+    end
     return true
 end
 

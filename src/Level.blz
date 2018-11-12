@@ -47,7 +47,7 @@ end
             options[options.size()] = swamp_options.sample()
         end
     else if type == "Forest"
-        forest_options = ["A squirrel runs by. Chase it?"]
+        forest_options = ["A squirrel runs by. Chase it?", "You see a wizard standing in the distance. Approach him?"]
         len = random(1, forest_options.size())
         for i = 0; i < len; i++
             options[options.size()] = forest_options.sample()
@@ -60,7 +60,7 @@ end
         end
     end
 
-    generic_options = ["You see a stranger. Approach them?", "Look for a fight", "You see a potion master selling his wares. Approach him?"]
+    generic_options = ["You see a stranger. Approach them?", "Look for a fight", "Look for a fight", "You see a potion master selling his wares. Approach him?", "You spot a rock. Pick it up?"]
     len = random(1, generic_options.size())
     for i = 0; i < len; i++
         options[options.size()] = generic_options.sample()

@@ -16,6 +16,9 @@ end
     while valid == false
         num = number_input()
         valid = num >= 0 && num <= options.size()
+        if valid == false
+            print("Please enter a valid option")
+        end
     end
     return num - 1
 end

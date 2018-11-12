@@ -130,6 +130,33 @@ end
     end
 end
 
+:skeleton_encounter(game_state)
+    option = random(3)
+    if option == 0
+        game_state.start_combat(["Skeleton King", "Skeleton Warrior", "Skeleton Warrior"])
+    else
+        acquire_item_helper(game_state, "Doot Doot Horn")
+    end
+end
+
+:wizard_encounter(game_state)
+    if game_state.player.class.type != "Mage"
+        inform("I have nothing for you "+game_state.player.class)
+        return false
+    end
+    spell_items = spells_to_learn()
+    old_spells = game_state.player.get_items().filter(x -> spell_items.contains?(x))
+    if old_spells.empty?() == false
+        inform("I have a powerful spell for you, but first I must take away your powers")
+        for i = 0; i < old_spells.size(); i++
+            game_state.player.remove_item(old_spells[i])
+        end
+    end
+    new_spell = spell_items.sample()
+    game_state.player.acquire_item(new_spell.name)
+    inform("The wizard has bestowed upon you the spell of "+new_spell.name)
+end
+
 :get_function_from_option(option)
     if option == "Continue"
         next_level
@@ -151,8 +178,12 @@ end
         potion_master
     else if option == "A stick is laying in the muck. Pick it up?"
         acquire_item("Stick")
+    else if option == "You spot a rock. Pick it up?"
+        acquire_item("Rock")
     else if option == "A mysterious skeleton stares at you in the distance"
-        acquire_item("Doot Doot Horn")
+        skeleton_encounter
+    else if option == "You see a wizard standing in the distance. Approach him?"
+        wizard_encounter
     else
         throw "Invalid function name "+option
     end
