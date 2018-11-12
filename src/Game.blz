@@ -59,7 +59,7 @@ end
     inform("Press enter to continue")
 
     print_seperator()
-    print("How many rooms do you want to play with? 5 is small. 10 is average. 15 is large")
+    print("How many rooms do you want to play with? 8 is small. 12 is average. 17 is large")
     valid = false
     while valid != true
         num_levels = number_input()

@@ -53,7 +53,7 @@ end
             options[options.size()] = forest_options.sample()
         end
     else if type == "Plains"
-        plains_options = ["Nap"]
+        plains_options = ["Nap", "A mouse climbs on your shoe. Kick it?"]
         len = random(1, plains_options.size())
         for i = 0; i < len; i++
             options[options.size()] = plains_options.sample()

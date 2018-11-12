@@ -69,13 +69,19 @@ end
 end
 
 :nap(game_state)
-    game_state.player.heal(50)
-    print("You take a nice relaxing nap.")
-    inform("You recover 50 health.")
+    option = random(20)
+    if option == 0
+        inform("Your nap is interrupted by a wondering zombie!")
+            game_state.start_combat(["Zombie"])
+    else
+        game_state.player.heal(50)
+        print("You take a nice relaxing nap.")
+        inform("You recover 50 health.")
+    end
 end
 
 :talk_to_stranger(game_state)
-    event = random(3)
+    event = random(5)
     if event == 0
         print("They appear to be friendly and in a talkative mood")
         inform("You chat about life, love, and the finer things")
@@ -90,6 +96,25 @@ end
         inform("He throws you some coins!")
         game_state.player.change_gold(random(15, 30))
         inform(game_state.player)
+    else if event == 3
+        print("It was a bandit!")
+        if game_state.player.get_items().size() == 0
+            inform("He couldn't take anything because you have nothing!")
+        end
+        item = game_state.player.get_items().sample()
+        game_state.player.remove_item(item)
+        inform("After a brief struggle, the bandit makes it away with your "+item.name)
+    else if event == 4
+        print("It is a musician")
+        inform("She is looking for someone to jam with")
+        player_items = game_state.player.get_items().map(x -> x.name)
+        if player_items.contains?("Doot Doot Horn")
+            inform("You pull out your Doot Doot Horn and play 2 notes")
+            game_state.player.increase_stats(0, 0, 5)
+            inform("You gain 5 int\n"+game_state.player)
+        else
+            inform("Too bad you don't have anything to play")
+        end
     end
 end
 
@@ -196,6 +221,8 @@ end
         skeleton_encounter
     else if option == "You see a wizard standing in the distance. Approach him?"
         wizard_encounter
+    else if option == "A mouse climbs on your shoe. Kick it?"
+        game_state -> game_state.start_combat(["Mutant Mouse"])
     else
         throw "Invalid function name "+option
     end

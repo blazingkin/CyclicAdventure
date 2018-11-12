@@ -104,6 +104,8 @@ end
         Enemy(name, 100, 500, skeleton_king_combat)
     else if name == "Zombie"
         Enemy(name, 75, 40, hurt_player_func(20, "The zombie gnaws at you for "))
+    else if name == "Mutant Mouse"
+        Enemy(name, 120, 70, hurt_player_func(30, "The mouse gnaws at you for "))
     else
         throw "Invalid enemy name "+name
     end
